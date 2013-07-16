@@ -1,0 +1,93 @@
+<div id="tablewrapper">
+    <div id="tableheader">
+        <div class="search row">
+            <select class="col-lg-2" id="columns" onchange="sorter.search('query')"></select>
+            <input class="col-lg-2" type="text" id="query" onkeyup="sorter.search('query')" />
+        </div>
+    </div>
+    <div class="row" id="tablefooter">
+        <div class="input-group col-lg-3">
+            <select id="results-per-page" onchange="sorter.size(this.value)">
+                <option value="5" selected="selected">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <span class="input-group-addon">Resultados por página</span>
+        </div>
+        <div id="tablenav">
+            <ul class="col-lg-2 pager">
+                <li><a href="#"><div style="white-space:nowrap;">Videos del <span id="startrecord"></span> al <span id="endrecord"></span> de <span id="totalrecords"></span></div></a></li>
+            </ul>
+            <ul class="col-lg-2 pagination pagination">
+                <li class="disabled"><a class="first-page" href="#" onclick="sorter.move(-1,true);"><<</a></li>
+                <li class="disabled"><a class="prev-page" href="#" onclick="sorter.move(-1);"><</a></li>
+                <li><a class="next-page" href="#" onclick="sorter.move(1);">></a></li>
+                <li><a class="last-page" href="#" onclick="sorter.move(1,true);">>></a></li>
+            </ul>
+            <div class="input-group col-lg-3">
+                <span class="input-group-addon">Pagina</span>
+                <select id="pagedropdown"></select>
+                <div class="page input-group-addon"><span style="display:none" id="currentpage"></span> de <span id="totalpages"></span></div>
+            </div>
+        </div>
+        <a class="btn btn-default col-lg-2 pull-right disabled" href="#" id="use-this-video">Usar este video</a>
+    </div>
+    <table class="row table table-striped table-bordered table-condensed table-hover tinytable" id="table">
+        <thead>
+            <tr>
+                <th class="nosort"><h3>Imagen</h3></th>
+                <th><h3>Título</h3></th>
+                <th><h3>Categoría</h3></th>
+                <th><h3>Programa</h3></th>
+                <th><h3>Fecha</h3></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ #videos }}
+            <tr id="videoresult_{{ id }}">
+                <td>
+                    <a class="iframe" data-placement="top" data-toggle="tooltip" href="http://micanal.pe/embed/{{ id }}" rel="tooltip" target="_blank" title="{{ nombre_vi }}"><img src="{{ imagen }}" /></a>
+                </td>
+                <td>{{ nombre_vi }}</td>
+                <td>{{ categorias_no }}</td>
+                <td>{{ nombre_pr }}</td>
+                <td>{{ fecha }}</td>
+            </tr>
+            {{ /videos }}
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    var sorter = new TINY.table.sorter('sorter','table',{
+        headclass:'head',
+        ascclass:'asc',
+        descclass:'desc',
+        evenclass:'evenrow',
+        oddclass:'oddrow',
+        evenselclass:'evenselected',
+        oddselclass:'oddselected',
+        paginate:true,
+        size:5,
+        colddid:'columns',
+        currentid:'currentpage',
+        totalid:'totalpages',
+        startingrecid:'startrecord',
+        endingrecid:'endrecord',
+        totalrecid:'totalrecords',
+        hoverid:'selectedrow',
+        pageddid:'pagedropdown',
+        navid:'tablenav',
+        sortcolumn:1,
+        sortdir:1,
+        init:true
+    });
+    $('table#table tr').on('click', 'td', function(){
+        $('table#table tbody tr').removeClass('success');
+        $(this).parent().addClass('success');
+        $('a#use-this-video').removeClass('disabled');
+    });
+    $(".iframe").colorbox({iframe:true, width:"80%", height:"80%"});
+</script>
+

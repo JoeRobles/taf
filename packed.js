@@ -132,21 +132,21 @@ TINY.table=function(){
 		}
 		for(i;i<t.l;i++){var r=t.r[i]; if(t.a[i].s){r.style.display=x>=s&&x<l?'':'none'; x++}else{r.style.display='none'}}
 	};
-        sorter.prototype.removefirstdisclass=function() {
-            $('.prev-page').parent().removeClass('disabled');
-            $('.first-page').parent().removeClass('disabled');
-        };
         sorter.prototype.addfirstdisclass=function() {
             $('.prev-page').parent().addClass('disabled');
             $('.first-page').parent().addClass('disabled');
         };
-        sorter.prototype.removelastdisclass=function() {
-            $('.next-page').parent().removeClass('disabled');
-            $('.last-page').parent().removeClass('disabled');
-        };
         sorter.prototype.addlastdisclass=function() {
             $('.next-page').parent().addClass('disabled');
             $('.last-page').parent().addClass('disabled');
+        };
+        sorter.prototype.removefirstdisclass=function() {
+            $('.prev-page').parent().removeClass('disabled');
+            $('.first-page').parent().removeClass('disabled');
+        };
+        sorter.prototype.removelastdisclass=function() {
+            $('.next-page').parent().removeClass('disabled');
+            $('.last-page').parent().removeClass('disabled');
         };
 	sorter.prototype.move=function(d,m){
             this.goto(d==1?(m?this.d:this.g+1):(m?1:this.g-1));
@@ -168,22 +168,24 @@ TINY.table=function(){
                 }
             } else {
                 if (d > 0) {//next
+                    this.addlastdisclass();
                     if (selval < optionsize - 1) {
                         $("#pagedropdown").val(selsumres).attr('selected',true);
                         this.removefirstdisclass();
+                        this.removelastdisclass();
                     } else if (selval === optionsize - 1){
                         $("#pagedropdown").val(selsumres).attr('selected',true);
                         this.removefirstdisclass();
-                        this.addlastdisclass();
                     }
                 } else if (d < 0) {//prev
+                    this.addfirstdisclass();
                     if (selval > 2) {
                         $("#pagedropdown").val(selsumres).attr('selected',true);
                         this.removelastdisclass();
+                        this.removefirstdisclass();
                     } else if (selval === 2) {
                         $("#pagedropdown").val(selsumres).attr('selected',true);
                         this.removelastdisclass();
-                        this.addfirstdisclass();
                     }
                 }
             }
